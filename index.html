@@ -2,257 +2,82 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>個人學習歷程檔案 | 專業版</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <title>我的學習歷程數位檔案</title>
     <style>
-        :root {
-            --primary-dark: #2c3e50;
-            --accent-blue: #3498db;
-            --light-blue: #ebf5fb;
-            --text-gray: #555;
-            --bg-color: #f8fafc;
-        }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; }
+        .header { text-align: center; padding: 40px 0; background: #00a896; color: white; border-radius: 15px; margin-bottom: 30px; }
+        
+        /* 導覽按鈕 */
+        .nav-container { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; }
+        .nav-btn { padding: 12px 30px; border: none; border-radius: 25px; background: white; color: #00a896; 
+                   font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: 0.3s; }
+        .nav-btn:hover, .nav-btn.active { background: #028090; color: white; }
 
-        body {
-            font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
-            background-color: var(--bg-color);
-            margin: 0;
-            color: #333;
-            line-height: 1.6;
-        }
+        /* 內容區塊 */
+        .grade-section { display: none; animation: fadeIn 0.5s; }
+        .grade-section.active { display: block; }
 
-        /* 頂部橫幅 */
-        header {
-            background: linear-gradient(135deg, var(--primary-dark) 0%, #34495e 100%);
-            color: white;
-            padding: 3rem 1rem;
-            text-align: center;
-            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
-        }
+        .subject-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .card { background: white; padding: 20px; border-radius: 12px; border-left: 5px solid #00a896; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .card h3 { margin-top: 0; color: #333; }
+        .tag { display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 0.8em; margin-bottom: 10px; }
+        .tag-required { background: #e1f5fe; color: #0288d1; }
+        .tag-elective { background: #fff3e0; color: #f57c00; }
 
-        header h1 { margin: 0; font-size: 2.5rem; letter-spacing: 2px; }
-        header p { opacity: 0.9; margin-top: 10px; font-weight: 300; }
-
-        /* 導覽按鈕區 */
-        .nav-container {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin: -30px 10px 40px;
-            flex-wrap: wrap;
-        }
-
-        .nav-btn {
-            padding: 15px 25px;
-            font-size: 16px;
-            cursor: pointer;
-            border: none;
-            border-radius: 12px;
-            background: white;
-            color: var(--primary-dark);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .nav-btn i { font-size: 1.2rem; }
-
-        .nav-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-            background-color: var(--light-blue);
-        }
-
-        .nav-btn.active {
-            background-color: var(--accent-blue);
-            color: white;
-        }
-
-        /* 內容容器 */
-        main {
-            width: 95%;
-            max-width: 1000px;
-            margin: 0 auto 50px;
-        }
-
-        .content-section {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-            display: none;
-            animation: slideUp 0.6s ease forwards;
-        }
-
-        .content-section.active { display: block; }
-
-        h2 {
-            color: var(--primary-dark);
-            font-size: 1.8rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 30px;
-        }
-
-        h2::after {
-            content: "";
-            flex: 1;
-            height: 2px;
-            background: #eee;
-        }
-
-        /* 成果卡片排版 */
-        .item-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .item-card {
-            border: 1px solid #eee;
-            border-radius: 12px;
-            padding: 20px;
-            transition: 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .item-card:hover {
-            border-color: var(--accent-blue);
-            background: var(--light-blue);
-        }
-
-        .item-card h3 {
-            margin-top: 0;
-            color: var(--accent-blue);
-            font-size: 1.2rem;
-        }
-
-        .tag {
-            display: inline-block;
-            background: #eee;
-            padding: 2px 10px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            margin-bottom: 10px;
-            color: #666;
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @media (max-width: 600px) {
-            .nav-btn { width: 100%; justify-content: center; }
-            .content-section { padding: 20px; }
-        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>[你的姓名]</h1>
-    <p><i class="fas fa-graduation-cap"></i> 學習歷程數位檔案 | 2023 - 2026</p>
-</header>
+<div class="header">
+    <h1>學習歷程全紀錄</h1>
+    <p>高一至高三 課程學習成果統整</p>
+</div>
 
-<nav class="nav-container">
-    <button class="nav-btn active" onclick="showTab(event,'intro')"><i class="fas fa-user"></i>個人簡介</button>
-    <button class="nav-btn" onclick="showTab(event,'grade1')"><i class="fas fa-seedling"></i>高一探索</button>
-    <button class="nav-btn" onclick="showTab(event,'grade2')"><i class="fas fa-book-reader"></i>高二深化</button>
-    <button class="nav-btn" onclick="showTab(event,'grade3')"><i class="fas fa-rocket"></i>高三衝刺</button>
-</nav>
+<div class="nav-container">
+    <button class="nav-btn active" onclick="showGrade('g1')">高一時期</button>
+    <button class="nav-btn" onclick="showGrade('g2')">高二時期</button>
+    <button class="nav-btn" onclick="showGrade('g3')">高三時期</button>
+</div>
 
-<main>
-    <div id="intro" class="content-section active">
-        <h2><i class="fas fa-address-card"></i> 個人簡介</h2>
-        <div style="display: flex; flex-wrap: wrap; gap: 30px; align-items: center;">
-            <div style="flex: 1; min-width: 250px;">
-                <p>這裡是你的自我介紹。建議用 200 字左右描述你的特質，例如：<strong>「我是一個熱愛邏輯思考與解決問題的學生，在高三生活中，我學會了如何在壓力下分配時間...」</strong></p>
-                <div class="item-card">
-                    <strong><i class="fas fa-star"></i> 核心技能</strong>
-                    <p>Python 數據分析、中英文簡報、影片剪輯 (Premiere)</p>
-                </div>
-            </div>
-            <div style="width: 200px; height: 250px; background: #ddd; border-radius: 15px; display: flex; align-items: center; justify-content: center; color: #888;">
-                建議放置個人照
-            </div>
+<div id="g1" class="grade-section active">
+    <div class="subject-grid">
+        <div class="card">
+            <span class="tag tag-required">部定必修</span>
+            <h3>英文閱讀與寫作</h3>
+            <p>重點：分析五篇英文短篇小說，並撰寫心智圖總結。</p>
+            <a href="#">查看檔案內容 →</a>
+        </div>
+        <div class="card">
+            <span class="tag tag-elective">校訂選修</span>
+            <h3>程式設計入門</h3>
+            <p>重點：學習 Python 基礎，獨立完成猜數字小遊戲。</p>
+            <a href="#">查看檔案內容 →</a>
         </div>
     </div>
+</div>
 
-    <div id="grade1" class="content-section">
-        <h2><i class="fas fa-seedling"></i> 高一：多元探索期</h2>
-        <div class="item-grid">
-            <div class="item-card">
-                <span class="tag">自主學習</span>
-                <h3>基礎網頁開發入門</h3>
-                <p>利用課餘時間學習 HTML/CSS，並建立了一個展示個人收藏的靜態網頁。</p>
-            </div>
-            <div class="item-card">
-                <span class="tag">社團活動</span>
-                <h3>天文社觀星活動</h3>
-                <p>擔任社員，學習使用望遠鏡並協助記錄校慶觀星活動流程。</p>
-            </div>
+<div id="g2" class="grade-section">
+    <div class="subject-grid">
+        <div class="card">
+            <span class="tag tag-required">部定必修</span>
+            <h3>物理實驗</h3>
+            <p>重點：自由落體實驗數據分析與誤差討論。</p>
+            <a href="#">查看檔案內容 →</a>
         </div>
     </div>
-
-    <div id="grade2" class="content-section">
-        <h2><i class="fas fa-book-reader"></i> 高二：專業深化期</h2>
-        <div class="item-grid">
-            <div class="item-card">
-                <span class="tag">課程成果</span>
-                <h3>數學專題研究</h3>
-                <p>探討黃金比例在現代建築中的應用，獲得校內專題競賽優等。</p>
-            </div>
-            <div class="item-card">
-                <span class="tag">外部檢定</span>
-                <h3>GEPT 中高級通過</h3>
-                <p>強化英語聽說讀寫能力，並在暑假期間完成全英文夏令營。</p>
-            </div>
-        </div>
-    </div>
-
-    <div id="grade3" class="content-section">
-        <h2><i class="fas fa-rocket"></i> 高三：整合衝刺期</h2>
-        <div class="item-grid">
-            <div class="item-card">
-                <span class="tag">探究與實作</span>
-                <h3>物理實驗：彈擺運動分析</h3>
-                <p>利用 Tracker 軟體追蹤物體運動軌跡，並撰寫完整的實驗數據報告。</p>
-            </div>
-            <div class="item-card">
-                <span class="tag">心路歷程</span>
-                <h3>高中三年的學習省思</h3>
-                <p>從探索到鎖定資訊工程系的心路歷程總結，以及對未來的規劃。</p>
-            </div>
-        </div>
-    </div>
-</main>
+</div>
 
 <script>
-    function showTab(event, tabId) {
-        // 隱藏所有內容
-        document.querySelectorAll('.content-section').forEach(sec => {
-            sec.classList.remove('active');
-        });
-
-        // 取消所有按鈕選取狀態
-        document.querySelectorAll('.nav-btn').forEach(btn => {
-            btn.classList.remove('active');
-        });
-
-        // 顯示當前選中的內容與按鈕
-        document.getElementById(tabId).classList.add('active');
-        event.currentTarget.classList.add('active');
+    function showGrade(gradeId) {
+        // 隱藏所有區塊
+        document.querySelectorAll('.grade-section').forEach(sec => sec.classList.remove('active'));
+        // 取消所有按鈕活性
+        document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
         
-        // 切換時自動捲動回上方，優化手機體驗
-        window.scrollTo({ top: 150, behavior: 'smooth' });
+        // 顯示特定區塊與啟動按鈕
+        document.getElementById(gradeId).classList.add('active');
+        event.currentTarget.classList.add('active');
     }
 </script>
 
